@@ -64,8 +64,8 @@ export async function appRoutes(app: FastifyInstance) {
     })
 
     const completedHabits = day?.dayHabits.map(dayHabit => {
-      return dayHabit.habit_id 
-    })
+      return dayHabit.habit_id
+    }) ?? []
 
     return {
       possibleHabits,
@@ -135,12 +135,12 @@ export async function appRoutes(app: FastifyInstance) {
         (
           SELECT 
             cast(count(*) as float)
-          FROM habits_week_days HWK
+          FROM habits_week_days HWD
           JOIN habits H
             ON H.id = HWD.habit_id
           WHERE 
-            HWK.week_day = cast(strftime('%w', D.date/1000.0, 'unixepoch') as int)
-            AND H.created_at < D.date
+            HWD.week_day = cast(strftime('%w', D.date/1000.0, 'unixepoch') as int)
+            AND H.created_at <= D.date
         ) as amount
       FROM days D
     `
