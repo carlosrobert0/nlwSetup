@@ -24,7 +24,6 @@ export function SummaryTable() {
   useEffect(() => {
     api.get('summary').then(response => {
       setSummary(response.data)
-      console.log(response.data)
     })
   }, [])
 
