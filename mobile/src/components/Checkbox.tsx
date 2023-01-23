@@ -18,7 +18,7 @@ export function Checkbox({ title, checked = false, ...rest }: Props) {
       {
         checked ?
           <Animated.View 
-            className="w-8 h-8 bg-green-500 rounded-lg items-center justify-center"
+            className="w-8 h-8 bg-violet-500 rounded-lg items-center justify-center"
             entering={ZoomIn}
             exiting={ZoomOut}
           >

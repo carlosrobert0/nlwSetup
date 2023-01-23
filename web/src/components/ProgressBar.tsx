@@ -4,7 +4,7 @@ interface ProgressBarProps {
 
 export function ProgressBar({ progress }: ProgressBarProps) {
   return (
-    <div className="h-3 rounded-xl bg-zinc-700 w-full mt-4">
+    <div className="max-w-full h-3 rounded-xl bg-zinc-700 w-full mt-4">
       <div
         role="progressbar"
         aria-label="Progresso de habitos completados nesse dia"

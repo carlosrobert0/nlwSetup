@@ -33,6 +33,7 @@ export function Habit() {
   const { date } = router.params as Params
 
   const parsedDate = dayjs(date)
+  const dateParams = dayjs(date).format("YYYY-MM-DDT03:00:00.000z")
   const isDateInPast = parsedDate.endOf('day').isBefore(new Date())
   const dayOfWeek = parsedDate.format('dddd')
   const dayAndMonth = parsedDate.format('DD/MM')
@@ -60,7 +61,7 @@ export function Habit() {
     try {
       setLoading(true)
 
-      const response = await api.get('day', { params: { date } })
+      const response = await api.get('day', { params: { date: dateParams } })
       setDayInfo(response.data)
       setCompletedHabits(response.data.completedHabits)
     } catch (error) {
