@@ -104,7 +104,7 @@ export function Habit() {
           ["opacity-50"]: isDateInPast
         })}>
           {
-            dayInfo?.possibleHabits ?
+            dayInfo?.possibleHabits.length ?
               dayInfo?.possibleHabits.map(habit => (
                 <Checkbox
                   key={habit.id}
