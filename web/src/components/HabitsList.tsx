@@ -2,6 +2,7 @@ import * as Checkbox from "@radix-ui/react-checkbox";
 import dayjs from "dayjs";
 import { Check } from "phosphor-react";
 import { useEffect, useState } from "react";
+import { useAuth } from "../hooks/auth";
 import { api } from "../lib/axios";
 
 interface HabitsListProps {
@@ -20,15 +21,18 @@ interface HabitsInfo {
 
 export function HabitsList({ date, onCompletedChanged }: HabitsListProps) {
   const [habitsInfo, setHabitsInfo] = useState<HabitsInfo>()
-
+  const { user } = useAuth()
+  const { uid } = user
   useEffect(() => {
-    api.get('day', {
+    api.get(`day/${uid}`, {
       params: {
         date: date.toISOString(),
       }
     }).then(response => {
       setHabitsInfo(response.data)
     })
+
+    console.log(user)
   }, [])
 
   async function handleToggleHabit(habitId: string) {

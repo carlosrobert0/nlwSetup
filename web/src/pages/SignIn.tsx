@@ -1,20 +1,38 @@
-import { FormEvent, useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { FormEvent } from 'react'
 
 import { SignInSocialButton } from '../components/SignInSocialButton'
-import { AuthContext } from '../lib/auth'
+import { useAuth } from '../hooks/auth'
 import logoImage from './../assets/logo.svg'
 import logoSummaryHabits from './../assets/habits.png'
+import { useNavigate } from 'react-router-dom'
+import { api } from '../lib/axios'
 export function SignIn() {
-  const { signInWithGoogle } = useContext(AuthContext)
+  const { signInWithGoogle } = useAuth()
   const navigate = useNavigate()
 
   async function handleSignInWithGoogle(event: FormEvent) {
     event.preventDefault()
 
     try {
-      await signInWithGoogle()
-      navigate('/home')
+      const {
+        uid,
+        displayName,
+        email,
+        photoURL
+      } = await signInWithGoogle()
+
+      try {
+        await api.post('/user', {
+          uid,
+          displayName,
+          email,
+          photoURL
+        })
+
+        navigate('/home')
+      } catch (error) {
+        console.log(error)
+      }
     } catch (error) {
       console.log(error)
       alert('Não foi possivel conectar a conta Google')
@@ -32,7 +50,7 @@ export function SignIn() {
           <img src={logoSummaryHabits} alt="Summary habits" className='w-96 h-80 object-contain' />
 
           <div className='-ml-16 mt-6'>
-            <h2 className="text-white font-semibold text-xl text-center mb-14">Gerencie seus hábitos aqui</h2>
+            <h2 className="text-white font-semibold text-xl text-center mb-10">Gerencie seus hábitos aqui</h2>
             <SignInSocialButton
               title="Entrar com Google"
               svg="/google.svg"

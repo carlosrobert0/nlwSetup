@@ -3,6 +3,7 @@ import { generateRangeDatesFromYearStart } from './../../utils/generate-range-be
 import { useEffect, useState } from "react"
 import { api } from "../lib/axios"
 import dayjs from "dayjs"
+import { useAuth } from "../hooks/auth"
 
 const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
 
@@ -20,9 +21,11 @@ type Summary = {
 
 export function SummaryTable() {
   const [summary, setSummary] = useState<Summary>([])
+  const { user } = useAuth()
+  const { uid } = user
 
   useEffect(() => {
-    api.get('summary').then(response => {
+    api.get(`summary/${uid}`).then(response => {
       setSummary(response.data)
     })
   }, [])

@@ -9,7 +9,7 @@ interface Props extends ButtonHTMLAttributes<HTMLElement> {
 export function SignInSocialButton({ title, svg, ...rest }: Props) {
   return (
     <button
-      className="mt-4 mb-4 flex h-14 w-full items-center justify-center rounded-md border-b border-green-400 hover:bg-green-900 transition-all"
+      className="mt-4 mb-4 flex h-14 w-full items-center justify-center rounded-md border-b border-green-400 hover:bg-gradient-to-t from-green-900 via-transparent to-transparent transition-all"
       {...rest}
     >
       <div className="flex h-full items-center justify-center p-4">

@@ -1,11 +1,4 @@
 import {
-  GoogleAuthProvider,
-  signInWithPopup,
-  signOut,
-  onAuthStateChanged,
-} from 'firebase/auth'
-
-import {
   createContext,
   ReactNode,
   useContext,
@@ -13,22 +6,25 @@ import {
   useState,
 } from 'react'
 
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+  onAuthStateChanged,
+} from 'firebase/auth'
+
 import { auth } from '../lib/firebase'
 
 type User = {
+  uid: string
+  displayName: string
   email: string
-  permissions?: string[]
-  roles?: string[]
-}
-
-type SignInCredentials = {
-  email: string
-  password: string
+  photoURL: string
 }
 
 type AuthContextData = {
-  user: any
-  signInWithGoogle(): Promise<void>
+  user: User | any
+  signInWithGoogle(): Promise<any>
   signOutApplication(): Promise<void>
   isAuthenticated: boolean
 }
@@ -45,7 +41,7 @@ function AuthProvider({ children }: AuthProviderProps) {
   
   const provider = new GoogleAuthProvider()
 
-  const signInWithGoogle = async () => {
+  const signInWithGoogle = async (): Promise<any> => {
     try {
       const result = await signInWithPopup(auth, provider)
 
@@ -53,6 +49,7 @@ function AuthProvider({ children }: AuthProviderProps) {
       const token = credential?.accessToken
 
       setUser(result.user)
+      return result.user
     } catch (error) {
       console.log(error)
     }

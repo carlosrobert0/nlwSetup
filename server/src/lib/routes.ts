@@ -1,24 +1,61 @@
 import dayjs from "dayjs"
-import { FastifyInstance } from "fastify"
-import { z } from 'zod'
+import { FastifyInstance, FastifyRequest } from "fastify"
+import { string, z } from 'zod'
 import { prisma } from "./prisma"
 
 export async function appRoutes(app: FastifyInstance) {
+  app.post('/user', async (request) => {
+    const createUserBody = z.object({
+      uid: string(),
+      displayName: z.string(),
+      email: z.string(),
+      photoURL: z.string()
+    })
+
+    const { uid, displayName, email, photoURL } = createUserBody.parse(request.body)
+  
+    const user = await prisma.users.findFirst({
+      where: {
+        email: {
+          equals: email,
+        }
+      }
+    })
+
+    if(user) {
+      throw new Error("User already exists")
+    }
+
+    await prisma.users.create({
+      data: {
+        uid,
+        displayName,
+        email,
+        photoURL,
+        created_at: dayjs().startOf('day').toDate(),
+        updated_at: dayjs().startOf('day').toDate(),
+      }
+    })
+  })
+
   app.post('/habits', async (request) => {
     const createHabitBody = z.object({
       title: z.string(),
+      userUid: string(),
       weekDays: z.array(
         z.number().min(0).max(6)
       )
     })
 
-    const { title, weekDays } = createHabitBody.parse(request.body)
+
+    const { title, weekDays, userUid } = createHabitBody.parse(request.body)
 
     const today = dayjs().startOf('day').toDate()
 
     await prisma.habit.create({
       data: {
         title,
+        userUid,
         created_at: today,
         weekDays: {
           create: weekDays.map(weekDay => {
@@ -31,11 +68,13 @@ export async function appRoutes(app: FastifyInstance) {
     })
   })
 
-  app.get('/day', async (request) => {
+  app.get('/day/:uid', async (request) => {
+    const { uid } = request.params as any
+    
     const getDayParams = z.object({
       date: z.coerce.date()
     })
-
+    
     const { date } = getDayParams.parse(request.query)
 
     const parsedDate = dayjs(date).startOf('day')
@@ -45,6 +84,9 @@ export async function appRoutes(app: FastifyInstance) {
       where: {
         created_at: {
           lte: date,
+        },
+        userUid: {
+          equals: uid
         },
         weekDays: {
           some: {
@@ -121,7 +163,10 @@ export async function appRoutes(app: FastifyInstance) {
     }
   })
 
-  app.get('/summary', async () => {
+  app.get(`/summary/:uid`, async (request) => {
+    const { uid } = request.params as any
+    console.log(uid)
+
     const summary = await prisma.$queryRaw`
       SELECT 
         D.id, 
@@ -141,9 +186,10 @@ export async function appRoutes(app: FastifyInstance) {
           WHERE 
             HWD.week_day = cast(strftime('%w', D.date/1000.0, 'unixepoch') as int)
             AND H.created_at <= D.date
+            AND H.userUid = ${uid}
         ) as amount
       FROM days D
-    `
+    `;
 
     return summary
   })

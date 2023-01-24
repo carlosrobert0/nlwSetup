@@ -17,6 +17,8 @@ model Habit {
   created_at DateTime
   dayHabits  DayHabit[]
   weekDays   HabitWeekDays[]
+  Users      Users?          @relation(fields: [userUid], references: [uid])
+  userUid    String?
 
   @@map("habits")
 }
@@ -53,4 +55,16 @@ model DayHabit {
 
   @@unique([day_id, habit_id])
   @@map("day_habits")
+}
+
+model Users {
+  uid         String   @id @default(uuid())
+  displayName String
+  email       String   @unique
+  photoURL    String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
+  Habit       Habit[]
+
+  @@map("users")
 }
