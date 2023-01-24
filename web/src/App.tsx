@@ -1,15 +1,18 @@
+import { useContext } from 'react'
 import { Header } from './components/Header'
 import { SummaryTable } from './components/SummaryTable'
+import { AuthContext, AuthProvider } from './lib/auth'
 import './lib/dayjs'
+import { Home } from './pages/Home'
+import { SignIn } from './pages/SignIn'
 import './styles/global.css'
 
 export function App() {
+  const { user } = useContext(AuthContext)
+
   return (
-    <div className='w-screen h-screen flex justify-center items-center'>
-      <div className='w-full max-w-5xl px-6 flex flex-col gap-16'>
-        <Header />
-        <SummaryTable />
-      </div>
-    </div>
+    <AuthProvider>
+      { user ? <Home /> : <SignIn /> }
+    </AuthProvider>
   )
 }
