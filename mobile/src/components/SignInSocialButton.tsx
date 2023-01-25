@@ -16,7 +16,7 @@ export function SignInSocialButton({
     <TouchableOpacity
       activeOpacity={0.7}
       {...rest}
-      className="mb-14 flex w-52 flex-row h-14 gap-2 items-center justify-start rounded-md border-b border-green-400 active:bg-gradient-to-t from-green-200 to-green-600 transition-all"
+      className="mb-14 flex w-48 flex-row h-14 gap-2 items-center justify-center rounded-md border-b border-green-600 active:bg-gradient-to-t from-green-200 to-green-600 transition-all"
     >
       <View className="h-full flex items-center justify-center">
         <Svg />
