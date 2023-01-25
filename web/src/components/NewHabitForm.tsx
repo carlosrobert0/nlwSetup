@@ -4,6 +4,7 @@ import * as Checkbox from "@radix-ui/react-checkbox";
 
 import { api } from "../lib/axios";
 import { useAuth } from "../hooks/auth";
+import { useSummary } from "../hooks/summary";
 
 const availableWeekDays = [
   'Domingo',
@@ -19,6 +20,7 @@ export function NewHabitForm() {
   const [title, setTitle] = useState('')
   const [weekDays, setWeekDays] = useState<number[]>([])
   const { user } = useAuth()
+  const { getSummary } = useSummary()
   const { uid } = user
 
   async function createNewHabit(event: FormEvent) {
@@ -37,8 +39,8 @@ export function NewHabitForm() {
   
       setTitle('')
       setWeekDays([])
-  
-      alert('Hábito criado com sucesso!')
+
+      await getSummary()
     } catch (error) {
       console.log(error)
     }

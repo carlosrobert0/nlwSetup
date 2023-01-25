@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { api } from "../lib/axios"
 import dayjs from "dayjs"
 import { useAuth } from "../hooks/auth"
+import { useSummary } from "../hooks/summary"
 
 const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
 
@@ -12,24 +13,16 @@ const summaryDates = generateRangeDatesFromYearStart()
 const minimumSummaryDatesSize = 18 * 7
 const amountOfDaysToFill = minimumSummaryDatesSize - summaryDates.length
 
-type Summary = {
-  id: string
-  date: string
-  amount: number
-  completed: number
-}[]
-
 export function SummaryTable() {
-  const [summary, setSummary] = useState<Summary>([])
-  const { user } = useAuth()
-  const { uid } = user
-
+  const { summary, getSummary } = useSummary()
+  
   useEffect(() => {
-    api.get(`summary/${uid}`).then(response => {
-      setSummary(response.data)
-    })
+    getSummary() 
+    
+    return () => {
+      getSummary()
+    }
   }, [])
-
   return (
     <div className="w-full h-full flex">
       <div className="grid grid-rows-7 grid-flow-row gap-3">
@@ -50,7 +43,7 @@ export function SummaryTable() {
       <div className="grid grid-rows-7 grid-flow-col gap-3">
         {
           summary.length > 0 && summaryDates.map((date: any) => {
-            const dayInSummary = summary.find(day => {
+            const dayInSummary = summary.find((day: any) => {
               return dayjs(date).isSame(day.date, 'day')
             })
 

@@ -35,7 +35,6 @@ export function SignIn() {
       }
     } catch (error) {
       console.log(error)
-      alert('Não foi possivel conectar a conta Google')
     }
   }
 
