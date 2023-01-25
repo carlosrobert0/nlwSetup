@@ -40,16 +40,16 @@ export function SignIn() {
 
   return (
     <div className='w-screen h-screen flex justify-center items-center'>
-      <div className='w-full max-w-5xl px-6 flex flex-col gap-16'>
+      <div className='w-full max-w-5xl px-6 flex flex-col gap-12'>
         <div className="w-full max-w-3xl mx-auto flex items-center justify-between">
           <img src={logoImage} alt="Habits" />
         </div>
 
         <div className="flex items-start justify-around">
-          <img src={logoSummaryHabits} alt="Summary habits" className='w-96 h-80 object-contain' />
+          <img src={logoSummaryHabits} alt="Summary habits" className='w-96 h-80 object-contain -mt-1' />
 
-          <div className='-ml-16 mt-6'>
-            <h2 className="text-white font-semibold text-xl text-center mb-10">Gerencie seus hábitos aqui</h2>
+          <div className='-ml-16 mt-11 flex flex-col items-center'>
+            <h2 className="text-white font-semibold text-2xl text-center mb-8">Gerencie seus hábitos aqui</h2>
             <SignInSocialButton
               title="Entrar com Google"
               svg="/google.svg"
