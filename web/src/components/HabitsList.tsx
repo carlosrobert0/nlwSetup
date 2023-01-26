@@ -31,8 +31,6 @@ export function HabitsList({ date, onCompletedChanged }: HabitsListProps) {
     }).then(response => {
       setHabitsInfo(response.data)
     })
-
-    console.log(user)
   }, [])
 
   async function handleToggleHabit(habitId: string) {
