@@ -21,7 +21,7 @@ export function NewHabitForm() {
   const [weekDays, setWeekDays] = useState<number[]>([])
   const { user } = useAuth()
   const { getSummary } = useSummary()
-  const { uid } = user
+  const { email } = user
 
   async function createNewHabit(event: FormEvent) {
     event.preventDefault()
@@ -34,7 +34,7 @@ export function NewHabitForm() {
       await api.post('habits', {
         title,
         weekDays,
-        userUid: uid
+        userEmail: email
       })
   
       setTitle('')

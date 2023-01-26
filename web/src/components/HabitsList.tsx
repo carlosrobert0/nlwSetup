@@ -22,9 +22,9 @@ interface HabitsInfo {
 export function HabitsList({ date, onCompletedChanged }: HabitsListProps) {
   const [habitsInfo, setHabitsInfo] = useState<HabitsInfo>()
   const { user } = useAuth()
-  const { uid } = user
+  const { email } = user
   useEffect(() => {
-    api.get(`day/${uid}`, {
+    api.get(`day/${email}`, {
       params: {
         date: date.toISOString(),
       }

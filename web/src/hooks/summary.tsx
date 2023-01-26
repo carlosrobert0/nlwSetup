@@ -39,16 +39,17 @@ function SummaryProvider({ children }: SummaryProviderProps) {
   const [summary, setSummary] = useState<Summary>([])
 
   const { user } = useAuth()
-  const { uid } = user
+  const { email } = user
   
   async function getSummary() {
-    const response = await api.get(`summary/${uid}`)
+    const response = await api.get(`summary/${email}`)
     setSummary(response.data)
   }
 
   useEffect(() => {
     getSummary()
 
+    console.log(email)
     return () => {
       getSummary()
     }

@@ -17,7 +17,7 @@ model Habit {
   created_at DateTime
   dayHabits  DayHabit[]
   weekDays   HabitWeekDays[]
-  Users      Users?          @relation(fields: [userEmail], references: [uid])
+  Users      Users?          @relation(fields: [userEmail], references: [email])
   userEmail  String?
 
   @@map("habits")
@@ -64,7 +64,7 @@ model Users {
   photoURL    String
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now())
-  Habit       Habit[]
+  habit       Habit[]
 
   @@map("users")
 }

@@ -163,9 +163,9 @@ export async function appRoutes(app: FastifyInstance) {
     }
   })
 
-  app.get(`/summary/:email`, async (request) => {
+  app.get('/summary/:email', async (request) => {
     const { email } = request.params as any
-
+    console.log(email)
     const summary = await prisma.$queryRaw`
       SELECT 
         D.id, 
