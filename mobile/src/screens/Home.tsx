@@ -8,6 +8,7 @@ import { Header } from "../components/Header";
 import { api } from "../lib/axios";
 import { Loading } from "../components/Loading";
 import dayjs from "dayjs";
+import { useAuth } from "../hooks/auth";
 
 const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
 const datesFromYearStart = generateRangeDatesFromYearStart()

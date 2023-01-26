@@ -36,8 +36,8 @@ export function SignIn() {
     try {
       setLoading(true)
       await signInWithGoogle()
-
     } catch (error) {
+      console.log(error)
       Alert.alert('Ops', 'Não foi possivel conectar com a conta Google')
     } finally {
       setLoading(false)

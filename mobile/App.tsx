@@ -10,6 +10,7 @@ import {
 
 import { Loading } from './src/components/Loading';
 import { Routes } from './src/routes';
+import { AuthProvider } from './src/hooks/auth';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -19,7 +20,7 @@ export default function App() {
     Inter_800ExtraBold
   })
 
-  if(!fontsLoaded) {
+  if (!fontsLoaded) {
     return (
       <Loading />
     )
@@ -27,7 +28,9 @@ export default function App() {
 
   return (
     <>
-      <Routes />
+      <AuthProvider>
+        <Routes />
+      </AuthProvider>
       <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
     </>
   );
