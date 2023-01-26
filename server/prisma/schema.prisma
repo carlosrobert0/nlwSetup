@@ -17,8 +17,8 @@ model Habit {
   created_at DateTime
   dayHabits  DayHabit[]
   weekDays   HabitWeekDays[]
-  Users      Users?          @relation(fields: [userUid], references: [uid])
-  userUid    String?
+  Users      Users?          @relation(fields: [userEmail], references: [uid])
+  userEmail  String?
 
   @@map("habits")
 }

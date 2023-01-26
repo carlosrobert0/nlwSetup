@@ -41,21 +41,21 @@ export async function appRoutes(app: FastifyInstance) {
   app.post('/habits', async (request) => {
     const createHabitBody = z.object({
       title: z.string(),
-      userUid: string(),
+      userEmail: string(),
       weekDays: z.array(
         z.number().min(0).max(6)
       )
     })
 
 
-    const { title, weekDays, userUid } = createHabitBody.parse(request.body)
+    const { title, weekDays, userEmail } = createHabitBody.parse(request.body)
 
     const today = dayjs().startOf('day').toDate()
 
     await prisma.habit.create({
       data: {
         title,
-        userUid,
+        userEmail,
         created_at: today,
         weekDays: {
           create: weekDays.map(weekDay => {
@@ -68,8 +68,8 @@ export async function appRoutes(app: FastifyInstance) {
     })
   })
 
-  app.get('/day/:uid', async (request) => {
-    const { uid } = request.params as any
+  app.get('/day/:email', async (request) => {
+    const { email } = request.params as any
     
     const getDayParams = z.object({
       date: z.coerce.date()
@@ -85,8 +85,8 @@ export async function appRoutes(app: FastifyInstance) {
         created_at: {
           lte: date,
         },
-        userUid: {
-          equals: uid
+        userEmail: {
+          equals: email
         },
         weekDays: {
           some: {
@@ -163,9 +163,8 @@ export async function appRoutes(app: FastifyInstance) {
     }
   })
 
-  app.get(`/summary/:uid`, async (request) => {
-    const { uid } = request.params as any
-    console.log(uid)
+  app.get(`/summary/:email`, async (request) => {
+    const { email } = request.params as any
 
     const summary = await prisma.$queryRaw`
       SELECT 
@@ -186,7 +185,7 @@ export async function appRoutes(app: FastifyInstance) {
           WHERE 
             HWD.week_day = cast(strftime('%w', D.date/1000.0, 'unixepoch') as int)
             AND H.created_at <= D.date
-            AND H.userUid = ${uid}
+            AND H.userEmail = ${email}
         ) as amount
       FROM days D
     `;
