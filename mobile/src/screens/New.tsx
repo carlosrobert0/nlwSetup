@@ -5,12 +5,15 @@ import { Checkbox } from "../components/Checkbox";
 import { Feather } from "@expo/vector-icons"
 import colors from 'tailwindcss/colors'
 import { api } from "../lib/axios";
+import { useAuth } from "../hooks/auth";
 
 const availableWeekDays = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-Feira', 'Sábado']
 
 export function New() {
   const [title, setTitle] = useState('')
   const [weekDays, setWeekDays] = useState<number[]>([])
+  const { user } = useAuth()
+  const { email } = user
 
   function handleToggleWeekDay(weekDayIndex: number) {
     if(weekDays.includes(weekDayIndex)) {
@@ -26,8 +29,8 @@ export function New() {
         return Alert.alert('Novo hábito', 'Informe o nome do hábito e escolha a periodicidade')
       }
 
-      await api.post('/habits', { title, weekDays })
-
+      await api.post('/habits', { title, weekDays, userEmail: email })
+      
       setTitle('')
       setWeekDays([])
 

@@ -28,13 +28,13 @@ type SummaryProps = {
 
 export function SignIn() {
   const [loading, setLoading] = useState(false)
-
-  const { navigate } = useNavigation()
+  
   const { signInWithGoogle } = useAuth()
 
   async function handleSignInWithGoogle() {
     try {
       setLoading(true)
+      
       await signInWithGoogle()
     } catch (error) {
       console.log(error)

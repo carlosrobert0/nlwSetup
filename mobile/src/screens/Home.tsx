@@ -25,13 +25,14 @@ type SummaryProps = {
 export function Home() {
   const [loading, setLoading] = useState(true)
   const [summary, setSummary] = useState<SummaryProps | null>(null)
-
+  const { user } = useAuth()
+  const { email } = user
   const { navigate } = useNavigation()
 
   async function fetchData() {
     try {
       setLoading(true)
-      const response = await api.get('summary')
+      const response = await api.get(`summary/${email}`)
       setSummary(response.data)
     } catch (error) {
       Alert.alert('Ops', 'Não foi possivel carregar o sumario de hábitos.')

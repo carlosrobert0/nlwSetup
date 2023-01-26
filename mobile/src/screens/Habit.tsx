@@ -11,6 +11,7 @@ import { HabitsEmpty } from "../components/HabitsEmpty";
 import { api } from "../lib/axios";
 import { generateProgressPercentage } from "../utils/generate-progress-percentage";
 import clsx from "clsx";
+import { useAuth } from "../hooks/auth";
 
 interface Params {
   date: string;
@@ -28,6 +29,8 @@ export function Habit() {
   const [loading, setLoading] = useState(false)
   const [dayInfo, setDayInfo] = useState<DayInfoProps | null>(null)
   const [completedHabits, setCompletedHabits] = useState<string[]>([])
+  const { user } = useAuth()
+  const { email } = user
 
   const router = useRoute()
   const { date } = router.params as Params
@@ -61,7 +64,7 @@ export function Habit() {
     try {
       setLoading(true)
 
-      const response = await api.get('day', { params: { date: dateParams } })
+      const response = await api.get(`day/${email}`, { params: { date: dateParams } })
       setDayInfo(response.data)
       setCompletedHabits(response.data.completedHabits)
     } catch (error) {

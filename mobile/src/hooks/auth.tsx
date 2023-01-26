@@ -9,9 +9,6 @@ import React, {
 const { CLIENT_ID } = process.env;
 const { REDIRECT_URI } = process.env;
 
-// import * as Google from 'expo-google-app-auth'
-// import AsyncStorage from '@react-native-async-storage/async-storage
-
 import * as AuthSession from 'expo-auth-session'
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -49,10 +46,8 @@ function AuthProvider({ children }: AuthProviderProps) {
 
   const userStorageKey = '@habits:user'
 
-  async function signInWithGoogle() {
+  async function signInWithGoogle(): Promise<void> {
     try {
-      const CLIENT_ID = "545190758338-9ngp708170cojdg2deuj78p108m33k8n.apps.googleusercontent.com"
-      const REDIRECT_URI = "https://auth.expo.io/@carlosrobert0/habits"
       const RESPONSE_TYPE = "token"
       const SCOPE = encodeURI("profile email")
 
@@ -66,12 +61,16 @@ function AuthProvider({ children }: AuthProviderProps) {
         console.log(response)
         const userInfo = await response.json()
         
-        setUser({
+        const userLogged = {
           id: userInfo.id,
           email: userInfo.email,
           name: userInfo.given_name,
           photo: userInfo.picture
-        })
+        }
+
+        setUser(userLogged)
+
+        await AsyncStorage.setItem(userStorageKey, JSON.stringify(userLogged))
       }
     } catch (error) {
       throw new Error
