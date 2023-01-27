@@ -82,11 +82,12 @@ export async function appRoutes(app: FastifyInstance) {
 
     const possibleHabits = await prisma.habit.findMany({
       where: {
+        userEmail: {
+          equals: email,
+          mode: 'insensitive'
+        },
         created_at: {
           lte: date,
-        },
-        userEmail: {
-          equals: email
         },
         weekDays: {
           some: {
@@ -169,26 +170,27 @@ export async function appRoutes(app: FastifyInstance) {
     const summary = await prisma.$queryRaw`
       SELECT 
         D.id, 
-        D.date,
+        D.date, 
         (
-          SELECT 
-            cast(count(*) as float)
+          SELECT
+            count(*) :: float
           FROM day_habits DH
           WHERE DH.day_id = D.id
         ) as completed,
+
         (
           SELECT 
-            cast(count(*) as float)
+            count(*) :: float
           FROM habits_week_days HWD
           JOIN habits H
             ON H.id = HWD.habit_id
           WHERE 
-            HWD.week_day = cast(strftime('%w', D.date/1000.0, 'unixepoch') as int)
+            HWD.week_day = extract(dow from to_timestamp(date_part('epoch', D.date)::bigint))
             AND H.created_at <= D.date
-            AND H.userEmail = ${email}
+            AND 'H.userEmail' = ${email}
         ) as amount
       FROM days D
-    `;
+      `
 
     return summary
   })
