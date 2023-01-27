@@ -1,0 +1,17 @@
+services:
+  database_habits:
+    image: postgres
+    container_name: database_habits
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=habitos
+      - POSTGRES_PASSWORD=monitorados
+      - POSTGRES_DB=habits
+    volumes:
+      - pgdata:/data/postgres
+
+volumes:
+  pgdata:
+    driver: local
