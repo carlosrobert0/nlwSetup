@@ -34,7 +34,7 @@ export function NewHabitForm() {
       await api.post('habits', {
         title,
         weekDays,
-        userEmail: email
+        user_email: email
       })
   
       setTitle('')

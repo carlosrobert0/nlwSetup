@@ -6,14 +6,6 @@ import {
   useState,
 } from 'react'
 
-import {
-  GoogleAuthProvider,
-  signInWithPopup,
-  signOut,
-  onAuthStateChanged,
-} from 'firebase/auth'
-
-import { auth } from '../lib/firebase'
 import { api } from '../lib/axios'
 import { useAuth } from './auth'
 
@@ -48,8 +40,6 @@ function SummaryProvider({ children }: SummaryProviderProps) {
 
   useEffect(() => {
     getSummary()
-
-    console.log(email)
     return () => {
       getSummary()
     }

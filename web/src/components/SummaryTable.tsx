@@ -1,9 +1,7 @@
 import { HabitDay } from "./HabitDay"
 import { generateRangeDatesFromYearStart } from './../../utils/generate-range-between-dates'
-import { useEffect, useState } from "react"
-import { api } from "../lib/axios"
+import { useEffect } from "react"
 import dayjs from "dayjs"
-import { useAuth } from "../hooks/auth"
 import { useSummary } from "../hooks/summary"
 
 const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
