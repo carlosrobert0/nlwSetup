@@ -41,21 +41,21 @@ export async function appRoutes(app: FastifyInstance) {
   app.post('/habits', async (request) => {
     const createHabitBody = z.object({
       title: z.string(),
-      userEmail: string(),
+      user_email: string(),
       weekDays: z.array(
         z.number().min(0).max(6)
       )
     })
 
 
-    const { title, weekDays, userEmail } = createHabitBody.parse(request.body)
+    const { title, weekDays, user_email } = createHabitBody.parse(request.body)
 
     const today = dayjs().startOf('day').toDate()
 
     await prisma.habit.create({
       data: {
         title,
-        userEmail,
+        user_email,
         created_at: today,
         weekDays: {
           create: weekDays.map(weekDay => {
@@ -82,7 +82,7 @@ export async function appRoutes(app: FastifyInstance) {
 
     const possibleHabits = await prisma.habit.findMany({
       where: {
-        userEmail: {
+        user_email: {
           equals: email,
           mode: 'insensitive'
         },
@@ -166,7 +166,7 @@ export async function appRoutes(app: FastifyInstance) {
 
   app.get('/summary/:email', async (request) => {
     const { email } = request.params as any
-    console.log(email)
+    
     const summary = await prisma.$queryRaw`
       SELECT 
         D.id, 
@@ -187,7 +187,7 @@ export async function appRoutes(app: FastifyInstance) {
           WHERE 
             HWD.week_day = extract(dow from to_timestamp(date_part('epoch', D.date)::bigint))
             AND H.created_at <= D.date
-            AND 'H.userEmail' = ${email}
+            AND H.user_email = ${email}
         ) as amount
       FROM days D
       `

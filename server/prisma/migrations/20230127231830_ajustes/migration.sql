@@ -3,7 +3,7 @@ CREATE TABLE "habits" (
     "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL,
-    "user_email" TEXT,
+    "userEmail" TEXT,
 
     CONSTRAINT "habits_pkey" PRIMARY KEY ("id")
 );
@@ -59,7 +59,7 @@ CREATE UNIQUE INDEX "day_habits_day_id_habit_id_key" ON "day_habits"("day_id", "
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- AddForeignKey
-ALTER TABLE "habits" ADD CONSTRAINT "habits_user_email_fkey" FOREIGN KEY ("user_email") REFERENCES "users"("email") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "habits" ADD CONSTRAINT "habits_userEmail_fkey" FOREIGN KEY ("userEmail") REFERENCES "users"("email") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "habits_week_days" ADD CONSTRAINT "habits_week_days_habit_id_fkey" FOREIGN KEY ("habit_id") REFERENCES "habits"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
