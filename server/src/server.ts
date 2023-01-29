@@ -4,7 +4,10 @@ import { appRoutes } from "./lib/routes";
 
 const app = Fastify()
 
-app.register(cors)
+app.register(cors, {
+  origin: '*'
+})
+
 app.register(appRoutes)
 
 app.listen({
