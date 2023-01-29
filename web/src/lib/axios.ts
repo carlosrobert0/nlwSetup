@@ -1,5 +1,12 @@
 import axios from "axios"
 
+const { 
+  VITE_API_URL
+} = import.meta.env
+
+
 export const api = axios.create({
-  baseURL: 'http://34.232.52.218:3333'
+  baseURL: process.env.NODE_ENV === 'production'
+  ? VITE_API_URL
+  : 'http://localhost:3333'
 })
