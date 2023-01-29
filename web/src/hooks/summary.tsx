@@ -48,8 +48,8 @@ function SummaryProvider({ children }: SummaryProviderProps) {
   return (
     <SummaryContext.Provider
       value={{
-        summary,
-        getSummary
+        getSummary,
+        summary
       }}
     >
       {children}

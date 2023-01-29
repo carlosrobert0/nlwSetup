@@ -21,6 +21,9 @@ export function SummaryTable() {
       getSummary()
     }
   }, [])
+
+  useEffect(() => { console.log(summary)}, [])
+
   return (
     <div className="w-full h-full flex">
       <div className="grid grid-rows-7 grid-flow-row gap-3">
@@ -40,7 +43,7 @@ export function SummaryTable() {
 
       <div className="grid grid-rows-7 grid-flow-col gap-3">
         {
-          summary && summaryDates.map((date: any) => {
+          summary.length && summaryDates.map((date: any) => {
             const dayInSummary = summary.find((day: any) => {
               return dayjs(date).isSame(day.date, 'day')
             })
