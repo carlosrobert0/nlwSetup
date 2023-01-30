@@ -2,7 +2,7 @@ import { Plus, SignOut, X } from 'phosphor-react'
 import * as Dialog from '@radix-ui/react-dialog';
 import colors from 'tailwindcss/colors'
 
-import logoImage from './../assets/logo.svg'
+import logoImage from './../assets/logo.svg';
 import { NewHabitForm } from './NewHabitForm';
 import { useState } from 'react';
 import { useAuth } from '../hooks/auth';
