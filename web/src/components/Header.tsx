@@ -4,7 +4,7 @@ import colors from 'tailwindcss/colors'
 
 import logoImage from './../assets/logo.svg'
 import { NewHabitForm } from './NewHabitForm';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useAuth } from '../hooks/auth';
 import { useNavigate } from 'react-router-dom';
 

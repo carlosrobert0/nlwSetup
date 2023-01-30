@@ -13,16 +13,22 @@ const amountOfDaysToFill = minimumSummaryDatesSize - summaryDates.length
 
 export function SummaryTable() {
   const { summary, getSummary } = useSummary()
+
+  async function fetchSummary() {
+    try {
+      await getSummary()
+    } catch (error) {
+      console.log(error)
+    }
+  }
   
   useEffect(() => {
-    getSummary() 
+    fetchSummary() 
     
     return () => {
-      getSummary()
+      fetchSummary()
     }
   }, [])
-
-  useEffect(() => { console.log(summary)}, [])
 
   return (
     <div className="w-full h-full flex">
