@@ -1,3 +1,4 @@
+import { format, subHours } from "date-fns"
 import dayjs from "dayjs"
 import { FastifyInstance, FastifyRequest } from "fastify"
 import { string, z } from 'zod'
@@ -13,7 +14,7 @@ export async function appRoutes(app: FastifyInstance) {
     })
 
     const { uid, displayName, email, photoURL } = createUserBody.parse(request.body)
-  
+
     const user = await prisma.users.findFirst({
       where: {
         email: {
@@ -22,7 +23,7 @@ export async function appRoutes(app: FastifyInstance) {
       }
     })
 
-    if(user) {
+    if (user) {
       throw new Error("User already exists")
     }
 
@@ -50,7 +51,13 @@ export async function appRoutes(app: FastifyInstance) {
 
     const { title, weekDays, user_email } = createHabitBody.parse(request.body)
 
-    const today = dayjs().startOf('day').toDate()
+    let date = new Date();
+    let saoPauloDate = new Date(date.getTime() - 3 * 60 * 60 * 1000);
+    let threeHoursAgo = subHours(saoPauloDate, 3);
+
+    let dateFormatedUTC3 = format(threeHoursAgo, "yyyy-MM-dd'T'HH:mm:ss");
+
+    const today = dayjs(dateFormatedUTC3).startOf('day').toDate()
 
     await prisma.habit.create({
       data: {
@@ -70,11 +77,11 @@ export async function appRoutes(app: FastifyInstance) {
 
   app.get('/day/:email', async (request) => {
     const { email } = request.params as any
-    
+
     const getDayParams = z.object({
       date: z.coerce.date()
     })
-    
+
     const { date } = getDayParams.parse(request.query)
 
     const parsedDate = dayjs(date).startOf('day')
@@ -166,7 +173,7 @@ export async function appRoutes(app: FastifyInstance) {
 
   app.get('/summary/:email', async (request) => {
     const { email } = request.params as any
-    
+
     const summary = await prisma.$queryRaw`
       SELECT 
         D.id, 
