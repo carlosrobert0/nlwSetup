@@ -34,7 +34,7 @@ function SummaryProvider({ children }: SummaryProviderProps) {
   const { email } = user
   
   async function getSummary() {
-    const response = await api.get(`summary/${email}`)
+    const response = await api.get(`/summary/${email}`)
     setSummary(response.data)
   }
 
