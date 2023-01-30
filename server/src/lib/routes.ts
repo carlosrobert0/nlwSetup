@@ -175,7 +175,11 @@ export async function appRoutes(app: FastifyInstance) {
           SELECT
             count(*) :: float
           FROM day_habits DH
+          JOIN habits H
+            ON H.id = DH.habit_id
           WHERE DH.day_id = D.id
+            AND H.created_at <= D.date
+            AND H.user_email = ${email}
         ) as completed,
 
         (
